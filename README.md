@@ -1,6 +1,6 @@
-# Image-Image-Processing-API
+# Image-Processing-API
 
-This is a API for doing some operations on images like resize, crop, grayScale, blur.  
+This is an API for doing some operations on images like resize, crop, grayScale, blur.  
 The API response with processed image exept the api/image route response with image url.
 
 <h3>Note:</h3> This project is project one from the Udacity full stack nano dgree program
