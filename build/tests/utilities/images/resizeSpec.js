@@ -46,7 +46,7 @@ var path_1 = __importDefault(require("path"));
 var fs_1 = require("fs");
 var request = (0, supertest_1.default)(server_1.app);
 describe('endpoint resizing image', function () {
-    it('gets the api endpoint, status should be 200 and amage restored', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('gets the api endpoint, status should be 200 and image restored', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -70,23 +70,38 @@ describe('endpoint resizing image', function () {
             }
         });
     }); });
-});
-describe('resizing an image', function () {
-    it('image should be resized and stord', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var originalImagePath, thumnailPath, image;
+    it('gets the api endpoint, status should be 200 and image restored with new format', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    originalImagePath = path_1.default.resolve("assets/images/encenadaport.jpg");
-                    thumnailPath = path_1.default.resolve("assets/thumnail/encenadaport_400_400.jpg");
-                    if ((0, fs_1.existsSync)(thumnailPath)) {
-                        (0, fs_1.unlink)(thumnailPath, function (err) {
-                            if (err)
-                                throw err;
-                            console.log('path/file.txt was deleted');
-                        });
-                    }
-                    return [4 /*yield*/, (0, resize_1.resizeImage)(originalImagePath, 400, 400)];
+                case 0: return [4 /*yield*/, request.get('/api/images?fname=encenadaport&width=300&height=300&format=png')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('resizing an image', function () {
+    var originalImagePath;
+    var thumnailPath;
+    beforeAll(function () {
+        originalImagePath = path_1.default.resolve("assets/images/encenadaport.jpg");
+        thumnailPath = path_1.default.resolve("assets/thumnail/encenadaport_400_400.jpg");
+        if ((0, fs_1.existsSync)(thumnailPath)) {
+            (0, fs_1.unlink)(thumnailPath, function (err) {
+                if (err)
+                    throw err;
+                console.log('path/file.txt was deleted');
+            });
+        }
+    });
+    it('image should be resized and stord', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var image;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, resize_1.resizeImage)(originalImagePath, 400, 400)];
                 case 1:
                     _a.sent();
                     try {
@@ -99,6 +114,31 @@ describe('resizing an image', function () {
                             }
                         });
                         expect(image).not.toBeNull;
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('image should be resized and stord with new format as jpeg', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var image;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, resize_1.resizeImage)(originalImagePath, 400, 400, 'jpeg')];
+                case 1:
+                    _a.sent();
+                    try {
+                        image = (0, fs_1.readFile)(thumnailPath, function (err, data) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                return data;
+                            }
+                        });
+                        expect(image).not.toBeNull();
                     }
                     catch (error) {
                         console.log(error);

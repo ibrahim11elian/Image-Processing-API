@@ -6,7 +6,7 @@ import { existsSync, unlink, readFile } from 'fs';
 const request = supertest(app);
 
 describe('endpoint resizing image', () => {
-  it('gets the api endpoint, status should be 200 and amage restored', async () => {
+  it('gets the api endpoint, status should be 200 and image restored', async () => {
     const response = await request.get(
       '/api/images?fname=encenadaport&width=300&height=300'
     );
@@ -19,20 +19,29 @@ describe('endpoint resizing image', () => {
     );
     expect(response.status).toBe(404);
   });
+
+  it('gets the api endpoint, status should be 200 and image restored with new format', async () => {
+    const response = await request.get(
+      '/api/images?fname=encenadaport&width=300&height=300&format=png'
+    );
+    expect(response.status).toBe(200);
+  });
 });
 
 describe('resizing an image', () => {
-  it('image should be resized and stord', async () => {
-    const originalImagePath = path.resolve(`assets/images/encenadaport.jpg`);
-    const thumnailPath = path.resolve(
-      `assets/thumnail/encenadaport_400_400.jpg`
-    );
+  let originalImagePath: string;
+  let thumnailPath: string;
+  beforeAll(() => {
+    originalImagePath = path.resolve(`assets/images/encenadaport.jpg`);
+    thumnailPath = path.resolve(`assets/thumnail/encenadaport_400_400.jpg`);
     if (existsSync(thumnailPath)) {
       unlink(thumnailPath, (err) => {
         if (err) throw err;
         console.log('path/file.txt was deleted');
       });
     }
+  });
+  it('image should be resized and stord', async () => {
     await resizeImage(originalImagePath, 400, 400);
     try {
       const image = readFile(thumnailPath, (err, data) => {
@@ -43,6 +52,22 @@ describe('resizing an image', () => {
         }
       });
       expect(image).not.toBeNull;
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('image should be resized and stord with new format as jpeg', async () => {
+    await resizeImage(originalImagePath, 400, 400, 'jpeg');
+    try {
+      const image = readFile(thumnailPath, (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          return data;
+        }
+      });
+      expect(image).not.toBeNull();
     } catch (error) {
       console.log(error);
     }

@@ -8,4 +8,6 @@ var operations_1 = require("../../../utilities/operations");
 var route = express_1.default.Router();
 route.get('/', operations_1.getImage);
 route.get('/resize', operations_1.resize);
+route.get('/crop', operations_1.crop);
+route.get('/gray', operations_1.gray);
 exports.default = route;

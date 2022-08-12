@@ -39,39 +39,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imageExist = exports.resizeImage = void 0;
+exports.cropImage = void 0;
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
-function resize(req, res) {
+var resize_1 = require("./resize");
+function crop(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var width, height, format, originalImagePath, thumnailPath, error_1;
+        var width, height, left, top, format, originalImagePath, cropedPath, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     width = req.query.width;
                     height = req.query.height;
+                    left = req.query.left;
+                    top = req.query.top;
                     format = req.query.format;
                     originalImagePath = path_1.default.resolve("assets/images/".concat(req.query.fname));
-                    thumnailPath = path_1.default.resolve("assets/thumnail/".concat(req.query.fname, "_").concat(width, "_").concat(height, ".").concat(format || 'jpg'));
+                    cropedPath = path_1.default.resolve("assets/croped/".concat(req.query.fname, "_").concat(width, "_").concat(height, ".").concat(format || 'jpg'));
                     if (width) {
                         width = Number(width);
                     }
                     if (height) {
                         height = Number(height);
                     }
-                    if (!fs_1.default.existsSync(thumnailPath)) return [3 /*break*/, 1];
-                    res.status(200).sendFile(path_1.default.resolve(thumnailPath));
+                    if (left) {
+                        left = Number(left);
+                    }
+                    if (top) {
+                        top = Number(top);
+                    }
+                    if (!fs_1.default.existsSync(cropedPath)) return [3 /*break*/, 1];
+                    res.status(200).sendFile(path_1.default.resolve(cropedPath));
                     return [3 /*break*/, 7];
                 case 1:
-                    if (!imageExist(originalImagePath)) return [3 /*break*/, 6];
+                    if (!(0, resize_1.imageExist)(originalImagePath)) return [3 /*break*/, 6];
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, resizeImage(imageExist(originalImagePath), width, height, format)];
+                    return [4 /*yield*/, cropImage((0, resize_1.imageExist)(originalImagePath), left, top, width, height, format)];
                 case 3:
                     _a.sent();
-                    res.status(200).sendFile(thumnailPath);
+                    res.status(200).sendFile(cropedPath);
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();
@@ -89,8 +98,8 @@ function resize(req, res) {
         });
     });
 }
-// resize image and save it to thumnail folder
-function resizeImage(fpath, width, height, format) {
+// resize image and save it to croped folder
+function cropImage(fpath, left, top, width, height, format) {
     return __awaiter(this, void 0, void 0, function () {
         var filename;
         return __generator(this, function (_a) {
@@ -99,9 +108,14 @@ function resizeImage(fpath, width, height, format) {
                     filename = fpath.replace(/^.*[\\/]/, '').split('.')[0];
                     if (!(width || height)) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, sharp_1.default)(fpath)
-                            .resize(width, height)
+                            .extract({
+                            width: width,
+                            height: height,
+                            left: left,
+                            top: top,
+                        })
                             .toFormat(format || 'jpg')
-                            .toFile(path_1.default.resolve("assets/thumnail/".concat(filename, "_").concat(width, "_").concat(height, ".").concat(format || 'jpg')))];
+                            .toFile(path_1.default.resolve("assets/croped/".concat(filename, "_").concat(width, "_").concat(height, ".").concat(format || 'jpg')))];
                 case 1:
                     _a.sent();
                     _a.label = 2;
@@ -110,16 +124,5 @@ function resizeImage(fpath, width, height, format) {
         });
     });
 }
-exports.resizeImage = resizeImage;
-// check if the original image exist with different and if so return back the whole path with format
-function imageExist(originalImagePath) {
-    var formats = ['jpeg', 'jpg', 'png'];
-    for (var i = 0; i < formats.length; i++) {
-        if (fs_1.default.existsSync("".concat(originalImagePath, ".").concat(formats[i]))) {
-            return "".concat(originalImagePath, ".").concat(formats[i]);
-        }
-    }
-    return false;
-}
-exports.imageExist = imageExist;
-exports.default = resize;
+exports.cropImage = cropImage;
+exports.default = crop;
