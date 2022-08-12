@@ -39,48 +39,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cropImage = void 0;
+exports.blurImage = void 0;
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var resize_1 = require("./resize");
-function crop(req, res) {
+function bluri(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var width, height, left, top, format, originalImagePath, cropedPath, error_1;
+        var effect, format, originalImagePath, bluredPath, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    width = req.query.width;
-                    height = req.query.height;
-                    left = req.query.left;
-                    top = req.query.top;
+                    effect = req.query.effect;
                     format = req.query.format;
                     originalImagePath = path_1.default.resolve("assets/images/".concat(req.query.fname));
-                    cropedPath = path_1.default.resolve("assets/croped/".concat(req.query.fname, "_").concat(width, "_").concat(height, "_coord_").concat(top, "_").concat(left, ".").concat(format || 'jpg'));
-                    if (width) {
-                        width = Number(width);
+                    bluredPath = path_1.default.resolve("assets/blured/".concat(req.query.fname, "_").concat(effect, ".").concat(format || 'jpg'));
+                    if (effect) {
+                        effect = Number(effect);
                     }
-                    if (height) {
-                        height = Number(height);
-                    }
-                    if (left) {
-                        left = Number(left);
-                    }
-                    if (top) {
-                        top = Number(top);
-                    }
-                    if (!fs_1.default.existsSync(cropedPath)) return [3 /*break*/, 1];
-                    res.status(200).sendFile(path_1.default.resolve(cropedPath));
+                    if (!fs_1.default.existsSync(bluredPath)) return [3 /*break*/, 1];
+                    res.status(200).sendFile(path_1.default.resolve(bluredPath));
                     return [3 /*break*/, 7];
                 case 1:
-                    if (!(0, resize_1.imageExist)(originalImagePath)) return [3 /*break*/, 6];
+                    if (!((0, resize_1.imageExist)(originalImagePath) &&
+                        effect >= 0.3 &&
+                        effect <= 1000)) return [3 /*break*/, 6];
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, cropImage((0, resize_1.imageExist)(originalImagePath), left, top, width, height, format)];
+                    return [4 /*yield*/, blurImage((0, resize_1.imageExist)(originalImagePath), effect, format)];
                 case 3:
                     _a.sent();
-                    res.status(200).sendFile(cropedPath);
+                    res.status(200).sendFile(bluredPath);
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();
@@ -90,7 +80,7 @@ function crop(req, res) {
                 case 6:
                     res.status(404).json({
                         cod: 404,
-                        msg: 'image not found',
+                        msg: 'image not found or blur effect not in range (0.3 , 1000)',
                     });
                     _a.label = 7;
                 case 7: return [2 /*return*/];
@@ -98,24 +88,19 @@ function crop(req, res) {
         });
     });
 }
-// crop image and save it to croped folder
-function cropImage(fpath, left, top, width, height, format) {
+// blur image and save it to blured folder
+function blurImage(fpath, effect, format) {
     return __awaiter(this, void 0, void 0, function () {
         var filename;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     filename = fpath.replace(/^.*[\\/]/, '').split('.')[0];
-                    if (!(width || height)) return [3 /*break*/, 2];
+                    if (!effect) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, sharp_1.default)(fpath)
-                            .extract({
-                            width: width,
-                            height: height,
-                            left: left,
-                            top: top,
-                        })
+                            .blur(effect)
                             .toFormat(format || 'jpg')
-                            .toFile(path_1.default.resolve("assets/croped/".concat(filename, "_").concat(width, "_").concat(height, "_coord_").concat(top, "_").concat(left, ".").concat(format || 'jpg')))];
+                            .toFile(path_1.default.resolve("assets/blured/".concat(filename, "_").concat(effect, ".").concat(format || 'jpg')))];
                 case 1:
                     _a.sent();
                     _a.label = 2;
@@ -124,5 +109,5 @@ function cropImage(fpath, left, top, width, height, format) {
         });
     });
 }
-exports.cropImage = cropImage;
-exports.default = crop;
+exports.blurImage = blurImage;
+exports.default = bluri;

@@ -10,4 +10,5 @@ route.get('/', operations_1.getImage);
 route.get('/resize', operations_1.resize);
 route.get('/crop', operations_1.crop);
 route.get('/gray', operations_1.gray);
+route.get('/blur', operations_1.bluri);
 exports.default = route;

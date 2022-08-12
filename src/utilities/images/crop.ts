@@ -14,7 +14,9 @@ async function crop(req: express.Request, res: express.Response) {
   const originalImagePath = path.resolve(`assets/images/${req.query.fname}`);
 
   const cropedPath = path.resolve(
-    `assets/croped/${req.query.fname}_${width}_${height}.${format || 'jpg'}`
+    `assets/croped/${req.query.fname}_${width}_${height}_coord_${top}_${left}.${
+      format || 'jpg'
+    }`
   );
 
   if (width) {
@@ -30,7 +32,7 @@ async function crop(req: express.Request, res: express.Response) {
     top = Number(top);
   }
 
-  // checking if crobed image is already exist and croped image width = user entred width if so return the same croped image.
+  // checking if croped image is already exist and croped image width = user entred width and has the same coordnates if so return the same croped image.
   if (fs.existsSync(cropedPath)) {
     res.status(200).sendFile(path.resolve(cropedPath));
   } else if (imageExist(originalImagePath)) {
@@ -56,7 +58,7 @@ async function crop(req: express.Request, res: express.Response) {
   }
 }
 
-// resize image and save it to croped folder
+// crop image and save it to croped folder
 export async function cropImage(
   fpath: string,
   left: number,
@@ -78,7 +80,9 @@ export async function cropImage(
       .toFormat(format || 'jpg')
       .toFile(
         path.resolve(
-          `assets/croped/${filename}_${width}_${height}.${format || 'jpg'}`
+          `assets/croped/${filename}_${width}_${height}_coord_${top}_${left}.${
+            format || 'jpg'
+          }`
         )
       );
   }
