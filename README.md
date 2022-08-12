@@ -8,9 +8,12 @@ The API response with processed image exept the api/image route response with im
 ## Table of contents
 
 - [Overview](#overview)
+
+  - [File Structure](#file-strcture)
   - [setup](#setup)
   - [API](#api)
   - [Screenshot](#screenshots)
+
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
@@ -24,7 +27,60 @@ Users should be able to:
 - do image processing like resize,..
 - change the returned image format
 
-### setup:
+### File Strcture
+
+```
+├── assets
+│     ├── images
+│     ├── thumnail
+│     ├── blured
+│     ├── croped
+│     └── gray
+│
+├── build
+│
+├── node_modules
+├── spec
+│      └── support
+│           └── jasmine.json
+├── src
+│     ├──  routs
+│     │      └── api
+│     │          └── images
+│     │                └── index.ts
+│     ├──  tests
+│     │     ├── helpers
+│     │     │      └── reporter.ts
+│     │     ├──  utilitis
+│     │     │      └── images
+│     │     │            ├── blurSpec.ts
+│     │     │            ├── cropSpec.ts
+│     │     │            ├── getSpec.ts
+│     │     │            ├── graySpec.ts
+│     │     │            └── resizeSpec.ts
+│     │     │
+│     │     └── serverSpec.ts
+│     ├──  utilitis
+│     │     ├── images
+│     │     │      ├── blur.ts
+│     │     │      ├── crop.ts
+│     │     │      ├── get.ts
+│     │     │      ├── gray.ts
+│     │     │      └── resize.ts
+│     │     └── operations.ts
+│     └── server.ts
+│
+├── package-lock.json
+├── package.json
+├── tsconfig.json
+├── .eslintrc.json
+├── .gitignore
+├── .prettierrc
+└── README.md
+
+```
+
+### Setup:
 
 - you have to install all dependencies from:
 
