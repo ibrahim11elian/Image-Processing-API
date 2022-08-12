@@ -39,74 +39,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resizeImage = void 0;
-var sharp_1 = __importDefault(require("sharp"));
-var fs_1 = __importDefault(require("fs"));
-var path_1 = __importDefault(require("path"));
-function resize(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var width, height, originalImagePath, thumnailPath, error_1;
+var server_1 = require("../../../server");
+var supertest_1 = __importDefault(require("supertest"));
+var request = (0, supertest_1.default)(server_1.app);
+describe('getting an image url', function () {
+    it('gets the api endpoint, status should be 200', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    width = req.query.width;
-                    height = req.query.height;
-                    originalImagePath = path_1.default.resolve("assets/images/".concat(req.query.fname, ".jpg"));
-                    thumnailPath = path_1.default.resolve("assets/thumnail/".concat(req.query.fname, "_").concat(width, "_").concat(height, ".jpg"));
-                    if (width) {
-                        width = Number(width);
-                    }
-                    if (height) {
-                        height = Number(height);
-                    }
-                    if (!fs_1.default.existsSync(thumnailPath)) return [3 /*break*/, 1];
-                    res.status(304).sendFile(path_1.default.resolve(thumnailPath));
-                    return [3 /*break*/, 7];
+                case 0: return [4 /*yield*/, request.get('/api/images?fname=encenadaport')];
                 case 1:
-                    if (!fs_1.default.existsSync(originalImagePath)) return [3 /*break*/, 6];
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, resizeImage(originalImagePath, width, height)];
-                case 3:
-                    _a.sent();
-                    res.status(200).sendFile(thumnailPath);
-                    return [3 /*break*/, 5];
-                case 4:
-                    error_1 = _a.sent();
-                    res.status(500).send('fiald to process!!');
-                    return [3 /*break*/, 5];
-                case 5: return [3 /*break*/, 7];
-                case 6:
-                    res.status(404).json({
-                        cod: 404,
-                        msg: 'image not found',
-                    });
-                    _a.label = 7;
-                case 7: return [2 /*return*/];
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
             }
         });
-    });
-}
-// resize image and save it to thumnail folder
-function resizeImage(fpath, width, height) {
-    return __awaiter(this, void 0, void 0, function () {
-        var filename;
+    }); });
+    it('endpoint status should be 404', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    filename = fpath.replace(/^.*[\\/]/, '').split('.')[0];
-                    if (!(width || height)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, sharp_1.default)(fpath)
-                            .resize(width, height)
-                            .toFile(path_1.default.resolve("assets/thumnail/".concat(filename, "_").concat(width, "_").concat(height, ".jpg")))];
+                case 0: return [4 /*yield*/, request.get('/api/images?fname=anyname-does-not-exist')];
                 case 1:
-                    _a.sent();
-                    _a.label = 2;
-                case 2: return [2 /*return*/];
+                    response = _a.sent();
+                    expect(response.status).toBe(404);
+                    return [2 /*return*/];
             }
         });
-    });
-}
-exports.resizeImage = resizeImage;
-exports.default = resize;
+    }); });
+});

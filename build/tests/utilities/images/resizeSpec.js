@@ -39,74 +39,72 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resizeImage = void 0;
-var sharp_1 = __importDefault(require("sharp"));
-var fs_1 = __importDefault(require("fs"));
+var server_1 = require("../../../server");
+var supertest_1 = __importDefault(require("supertest"));
+var resize_1 = require("../../../utilities/images/resize");
 var path_1 = __importDefault(require("path"));
-function resize(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var width, height, originalImagePath, thumnailPath, error_1;
+var fs_1 = require("fs");
+var request = (0, supertest_1.default)(server_1.app);
+describe('endpoint resizing image', function () {
+    it('gets the api endpoint, status should be 200 and amage restored', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/images?fname=encenadaport&width=300&height=300')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('endpoint status should be 404 for image does not exist', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/images?fname=anyname-does-not-exist')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(404);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('resizing an image', function () {
+    it('image should be resized and stord', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var originalImagePath, thumnailPath, image;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    width = req.query.width;
-                    height = req.query.height;
-                    originalImagePath = path_1.default.resolve("assets/images/".concat(req.query.fname, ".jpg"));
-                    thumnailPath = path_1.default.resolve("assets/thumnail/".concat(req.query.fname, "_").concat(width, "_").concat(height, ".jpg"));
-                    if (width) {
-                        width = Number(width);
+                    originalImagePath = path_1.default.resolve("assets/images/encenadaport.jpg");
+                    thumnailPath = path_1.default.resolve("assets/thumnail/encenadaport_400_400.jpg");
+                    if ((0, fs_1.existsSync)(thumnailPath)) {
+                        (0, fs_1.unlink)(thumnailPath, function (err) {
+                            if (err)
+                                throw err;
+                            console.log('path/file.txt was deleted');
+                        });
                     }
-                    if (height) {
-                        height = Number(height);
-                    }
-                    if (!fs_1.default.existsSync(thumnailPath)) return [3 /*break*/, 1];
-                    res.status(304).sendFile(path_1.default.resolve(thumnailPath));
-                    return [3 /*break*/, 7];
-                case 1:
-                    if (!fs_1.default.existsSync(originalImagePath)) return [3 /*break*/, 6];
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, resizeImage(originalImagePath, width, height)];
-                case 3:
-                    _a.sent();
-                    res.status(200).sendFile(thumnailPath);
-                    return [3 /*break*/, 5];
-                case 4:
-                    error_1 = _a.sent();
-                    res.status(500).send('fiald to process!!');
-                    return [3 /*break*/, 5];
-                case 5: return [3 /*break*/, 7];
-                case 6:
-                    res.status(404).json({
-                        cod: 404,
-                        msg: 'image not found',
-                    });
-                    _a.label = 7;
-                case 7: return [2 /*return*/];
-            }
-        });
-    });
-}
-// resize image and save it to thumnail folder
-function resizeImage(fpath, width, height) {
-    return __awaiter(this, void 0, void 0, function () {
-        var filename;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    filename = fpath.replace(/^.*[\\/]/, '').split('.')[0];
-                    if (!(width || height)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, sharp_1.default)(fpath)
-                            .resize(width, height)
-                            .toFile(path_1.default.resolve("assets/thumnail/".concat(filename, "_").concat(width, "_").concat(height, ".jpg")))];
+                    return [4 /*yield*/, (0, resize_1.resizeImage)(originalImagePath, 400, 400)];
                 case 1:
                     _a.sent();
-                    _a.label = 2;
-                case 2: return [2 /*return*/];
+                    try {
+                        image = (0, fs_1.readFile)(thumnailPath, function (err, data) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                return data;
+                            }
+                        });
+                        expect(image).not.toBeNull;
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                    return [2 /*return*/];
             }
         });
-    });
-}
-exports.resizeImage = resizeImage;
-exports.default = resize;
+    }); });
+});

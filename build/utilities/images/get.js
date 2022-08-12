@@ -9,21 +9,16 @@ var path_1 = __importDefault(require("path"));
 function getImage(req, res) {
     // checking is image exist or not
     if (fs_1.default.existsSync(path_1.default.resolve("assets/images/".concat(req.query.fname, ".jpg")))) {
-        try {
-            res.status(200).json({
-                cod: 200,
-                msg: "image found",
-                url: "http://".concat(req.get("host"), "/images/").concat(req.query.fname, ".jpg"),
-            });
-        }
-        catch (error) {
-            console.log(error);
-        }
+        res.status(200).json({
+            cod: 200,
+            msg: 'image found',
+            url: "http://".concat(req.get('host'), "/images/").concat(req.query.fname, ".jpg"),
+        });
     }
     else {
         res.status(404).json({
             cod: 404,
-            msg: "image not found",
+            msg: 'image not found',
         });
     }
 }
