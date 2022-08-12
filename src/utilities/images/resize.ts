@@ -22,7 +22,7 @@ async function resize(req: express.Request, res: express.Response) {
 
   // checking if thumnail is already exist and thumnail width = user entred width if so return the same thumnail.
   if (fs.existsSync(thumnailPath)) {
-    res.status(304).sendFile(path.resolve(thumnailPath));
+    res.status(200).sendFile(path.resolve(thumnailPath));
   } else if (fs.existsSync(originalImagePath)) {
     // checking is the original image exist and resize, if not responed back error.
     try {

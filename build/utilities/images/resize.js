@@ -60,7 +60,7 @@ function resize(req, res) {
                         height = Number(height);
                     }
                     if (!fs_1.default.existsSync(thumnailPath)) return [3 /*break*/, 1];
-                    res.status(304).sendFile(path_1.default.resolve(thumnailPath));
+                    res.status(200).sendFile(path_1.default.resolve(thumnailPath));
                     return [3 /*break*/, 7];
                 case 1:
                     if (!fs_1.default.existsSync(originalImagePath)) return [3 /*break*/, 6];
