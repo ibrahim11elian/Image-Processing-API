@@ -8,6 +8,8 @@ The API response with processed image exept the api/image route response with im
 ## Table of contents
 
 - [Overview](#overview)
+  - [setup](#setup)
+  - [API](#api)
   - [Screenshot](#screenshots)
 - [My process](#my-process)
   - [Built with](#built-with)
@@ -22,10 +24,92 @@ Users should be able to:
 - do image processing like resize,..
 - change the returned image format
 
-### setup & use
+### setup:
 
-- you have to install all dependencies from
-  npm i
+- you have to install all dependencies from:
+
+```
+    npm install
+```
+
+- To build the project run:
+
+```
+    npm run build
+```
+
+- For testing run:
+
+```
+    npm run test
+```
+
+- To start the server you run:
+
+  This will build the project before start
+
+```
+    npm run start
+```
+
+- Or you can run:
+
+  This will run the server directly
+
+```
+    node ./build/server.js
+```
+
+### API:
+
+- For resize image:
+
+```
+http://{host}/api/images/resize?fname={image name => must be in image folder}&width={ prefared width }&height= {prefared height => not mandatory}
+```
+
+- For crop image:
+
+```
+http://{host}/api/images/resize?fname={image name => must be in image folder}&width={ prefared width }&height={prefared height}&top={Y coord}&left={X coord}
+```
+
+- For grayscale image:
+
+```
+http://{host}/api/images/resize?fname={image name => must be in image folder}
+```
+
+- For blur image:
+
+```
+http://{host}/api/images/resize?fname={image name => must be in image folder}&effect={bulr effect intensity}
+```
+
+<strong>Note:</strong> For above APIs you can add query for change the responsed iamge, the query name is "format" and you can chose from: (jpg => defulte, png, jpeg).
+
+- For gitting image url:
+
+```
+http://{host}/api/images?fname={image name => must be in image folder}
+```
+
+&emsp;&ensp; - Response example:
+
+```json
+{
+  "cod": 200,
+  "msg": "image found",
+  "url": "http://localhost:3000/images/tutor-5.png"
+}
+```
+
+```json
+{
+  "cod": 404,
+  "msg": "image not found"
+}
+```
 
 ### Screenshots
 
@@ -61,7 +145,7 @@ Users should be able to:
 
 ### What I learned ?
 
-The API you create presents my first opportunity to pull together the skills i learned through the course(udcity full stack nano degree) and tie them together in a commonly used application. Besides solidifying my skills, i also had the opportunity to problem-solve and work with the documentation of a popular image processing utility.
+The API i created presents my first opportunity to pull together the skills i learned through the course(udcity full stack nano degree) and tie them together in a commonly used application. Besides solidifying my skills, i also had the opportunity to problem-solve and work with the documentation of a popular image processing utility.
 
 The following are just some of the questions that i experienced along the way:
 
