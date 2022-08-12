@@ -2,6 +2,7 @@ import express from 'express';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
+import { imageExist } from './get';
 
 async function resize(req: express.Request, res: express.Response) {
   let width: unknown = req.query.width;
@@ -63,18 +64,6 @@ export async function resizeImage(
         )
       );
   }
-}
-
-// check if the original image exist with different and if so return back the whole path with format
-export function imageExist(originalImagePath: string): string | false {
-  const formats = ['jpeg', 'jpg', 'png'];
-
-  for (let i = 0; i < formats.length; i++) {
-    if (fs.existsSync(`${originalImagePath}.${formats[i]}`)) {
-      return `${originalImagePath}.${formats[i]}`;
-    }
-  }
-  return false;
 }
 
 export default resize;

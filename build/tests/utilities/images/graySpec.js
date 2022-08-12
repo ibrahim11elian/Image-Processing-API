@@ -41,16 +41,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var server_1 = require("../../../server");
 var supertest_1 = __importDefault(require("supertest"));
-var resize_1 = require("../../../utilities/images/resize");
+var gray_1 = require("../../../utilities/images/gray");
 var path_1 = __importDefault(require("path"));
 var fs_1 = require("fs");
 var request = (0, supertest_1.default)(server_1.app);
-describe('endpoint resizing image', function () {
-    it('gets the api endpoint, status should be 200 and image restored', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe('endpoint grayscale image', function () {
+    it('gets the api endpoint, status should be 200 and image transformed to grayscaly and restored', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images/resize?fname=encenadaport&width=300&height=300')];
+                case 0: return [4 /*yield*/, request.get('/api/images/gray?fname=encenadaport')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
@@ -62,7 +62,7 @@ describe('endpoint resizing image', function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images/resize?fname=anyname-does-not-exist')];
+                case 0: return [4 /*yield*/, request.get('/api/images/gray?fname=anyname-does-not-exist')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(404);
@@ -70,11 +70,11 @@ describe('endpoint resizing image', function () {
             }
         });
     }); });
-    it('gets the api endpoint, status should be 200 and image restored with new format', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('gets the api endpoint, status should be 200 and image transformed to grayscaly and restored with new format', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images/resize?fname=encenadaport&width=300&height=300&format=png')];
+                case 0: return [4 /*yield*/, request.get('/api/images/gray?fname=encenadaport&format=png')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
@@ -83,29 +83,29 @@ describe('endpoint resizing image', function () {
         });
     }); });
 });
-describe('resizing an image', function () {
+describe('grayscale an image', function () {
     var originalImagePath;
-    var thumnailPath;
+    var grayPath;
     beforeAll(function () {
         originalImagePath = path_1.default.resolve("assets/images/encenadaport.jpg");
-        thumnailPath = path_1.default.resolve("assets/thumnail/encenadaport_400_400.jpg");
-        if ((0, fs_1.existsSync)(thumnailPath)) {
-            (0, fs_1.unlink)(thumnailPath, function (err) {
+        grayPath = path_1.default.resolve("assets/gray/encenadaport.jpg");
+        if ((0, fs_1.existsSync)(grayPath)) {
+            (0, fs_1.unlink)(grayPath, function (err) {
                 if (err)
                     throw err;
                 console.log('image was deleted');
             });
         }
     });
-    it('image should be resized and stord', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('image should be transformed to grayscale and stord', function () { return __awaiter(void 0, void 0, void 0, function () {
         var image;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resize_1.resizeImage)(originalImagePath, 400, 400)];
+                case 0: return [4 /*yield*/, (0, gray_1.grayImage)(originalImagePath)];
                 case 1:
                     _a.sent();
                     try {
-                        image = (0, fs_1.readFile)(thumnailPath, function (err, data) {
+                        image = (0, fs_1.readFile)(grayPath, function (err, data) {
                             if (err) {
                                 console.log(err);
                             }
@@ -122,15 +122,15 @@ describe('resizing an image', function () {
             }
         });
     }); });
-    it('image should be resized and stord with new format as jpeg', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('image should be transformed to grayscale and stord with new format as png', function () { return __awaiter(void 0, void 0, void 0, function () {
         var image;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resize_1.resizeImage)(originalImagePath, 400, 400, 'jpeg')];
+                case 0: return [4 /*yield*/, (0, gray_1.grayImage)(originalImagePath, 'png')];
                 case 1:
                     _a.sent();
                     try {
-                        image = (0, fs_1.readFile)(thumnailPath, function (err, data) {
+                        image = (0, fs_1.readFile)(grayPath, function (err, data) {
                             if (err) {
                                 console.log(err);
                             }

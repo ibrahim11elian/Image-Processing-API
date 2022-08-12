@@ -1,50 +1,50 @@
 import { app } from '../../../server';
 import supertest from 'supertest';
-import { resizeImage } from '../../../utilities/images/resize';
+import { blurImage } from '../../../utilities/images/blur';
 import path from 'path';
 import { existsSync, unlink, readFile } from 'fs';
 const request = supertest(app);
 
-describe('endpoint resizing image', () => {
-  it('gets the api endpoint, status should be 200 and image restored', async () => {
+describe('endpoint blur image', () => {
+  it('gets the api endpoint, status should be 200 and image blured and restored', async () => {
     const response = await request.get(
-      '/api/images/resize?fname=encenadaport&width=300&height=300'
+      '/api/images/blur?fname=encenadaport&effect=3'
     );
     expect(response.status).toBe(200);
   });
 
   it('endpoint status should be 404 for image does not exist', async () => {
     const response = await request.get(
-      '/api/images/resize?fname=anyname-does-not-exist'
+      '/api/images/blur?fname=anyname-does-not-exist'
     );
     expect(response.status).toBe(404);
   });
 
-  it('gets the api endpoint, status should be 200 and image restored with new format', async () => {
+  it('gets the api endpoint, status should be 200 and image blured and restored with new format', async () => {
     const response = await request.get(
-      '/api/images/resize?fname=encenadaport&width=300&height=300&format=png'
+      '/api/images/blur?fname=encenadaport&effect=3&format=jpeg'
     );
     expect(response.status).toBe(200);
   });
 });
 
-describe('resizing an image', () => {
+describe('blur an image', () => {
   let originalImagePath: string;
-  let thumnailPath: string;
+  let bluredPath: string;
   beforeAll(() => {
     originalImagePath = path.resolve(`assets/images/encenadaport.jpg`);
-    thumnailPath = path.resolve(`assets/thumnail/encenadaport_400_400.jpg`);
-    if (existsSync(thumnailPath)) {
-      unlink(thumnailPath, (err) => {
+    bluredPath = path.resolve(`assets/blured/encenadaport_4.jpg`);
+    if (existsSync(bluredPath)) {
+      unlink(bluredPath, (err) => {
         if (err) throw err;
         console.log('image was deleted');
       });
     }
   });
-  it('image should be resized and stord', async () => {
-    await resizeImage(originalImagePath, 400, 400);
+  it('image should be blured and stord', async () => {
+    await blurImage(originalImagePath, 4);
     try {
-      const image = readFile(thumnailPath, (err, data) => {
+      const image = readFile(bluredPath, (err, data) => {
         if (err) {
           console.log(err);
         } else {
@@ -57,10 +57,10 @@ describe('resizing an image', () => {
     }
   });
 
-  it('image should be resized and stord with new format as jpeg', async () => {
-    await resizeImage(originalImagePath, 400, 400, 'jpeg');
+  it('image should be blured and stord with new format as png', async () => {
+    await blurImage(originalImagePath, 4, 'png');
     try {
-      const image = readFile(thumnailPath, (err, data) => {
+      const image = readFile(bluredPath, (err, data) => {
         if (err) {
           console.log(err);
         } else {

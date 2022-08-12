@@ -39,10 +39,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imageExist = exports.resizeImage = void 0;
+exports.resizeImage = void 0;
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
+var get_1 = require("./get");
 function resize(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var width, height, format, originalImagePath, thumnailPath, error_1;
@@ -64,11 +65,11 @@ function resize(req, res) {
                     res.status(200).sendFile(path_1.default.resolve(thumnailPath));
                     return [3 /*break*/, 7];
                 case 1:
-                    if (!imageExist(originalImagePath)) return [3 /*break*/, 6];
+                    if (!(0, get_1.imageExist)(originalImagePath)) return [3 /*break*/, 6];
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, resizeImage(imageExist(originalImagePath), width, height, format)];
+                    return [4 /*yield*/, resizeImage((0, get_1.imageExist)(originalImagePath), width, height, format)];
                 case 3:
                     _a.sent();
                     res.status(200).sendFile(thumnailPath);
@@ -111,15 +112,4 @@ function resizeImage(fpath, width, height, format) {
     });
 }
 exports.resizeImage = resizeImage;
-// check if the original image exist with different and if so return back the whole path with format
-function imageExist(originalImagePath) {
-    var formats = ['jpeg', 'jpg', 'png'];
-    for (var i = 0; i < formats.length; i++) {
-        if (fs_1.default.existsSync("".concat(originalImagePath, ".").concat(formats[i]))) {
-            return "".concat(originalImagePath, ".").concat(formats[i]);
-        }
-    }
-    return false;
-}
-exports.imageExist = imageExist;
 exports.default = resize;

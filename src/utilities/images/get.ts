@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import { imageExist } from './resize';
+import { existsSync } from 'fs';
 // response with image url
 function getImage(req: express.Request, res: express.Response): void {
   // checking is image exist or not
@@ -21,6 +21,18 @@ function getImage(req: express.Request, res: express.Response): void {
       msg: 'image not found',
     });
   }
+}
+
+// check if the original image exist with different and if so return back the whole path with format
+export function imageExist(originalImagePath: string): string | false {
+  const formats = ['jpeg', 'jpg', 'png'];
+
+  for (let i = 0; i < formats.length; i++) {
+    if (existsSync(`${originalImagePath}.${formats[i]}`)) {
+      return `${originalImagePath}.${formats[i]}`;
+    }
+  }
+  return false;
 }
 
 export default getImage;

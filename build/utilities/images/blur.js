@@ -43,7 +43,7 @@ exports.blurImage = void 0;
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
-var resize_1 = require("./resize");
+var get_1 = require("./get");
 function bluri(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var effect, format, originalImagePath, bluredPath, error_1;
@@ -61,13 +61,13 @@ function bluri(req, res) {
                     res.status(200).sendFile(path_1.default.resolve(bluredPath));
                     return [3 /*break*/, 7];
                 case 1:
-                    if (!((0, resize_1.imageExist)(originalImagePath) &&
+                    if (!((0, get_1.imageExist)(originalImagePath) &&
                         effect >= 0.3 &&
                         effect <= 1000)) return [3 /*break*/, 6];
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, blurImage((0, resize_1.imageExist)(originalImagePath), effect, format)];
+                    return [4 /*yield*/, blurImage((0, get_1.imageExist)(originalImagePath), effect, format)];
                 case 3:
                     _a.sent();
                     res.status(200).sendFile(bluredPath);

@@ -43,7 +43,7 @@ exports.cropImage = void 0;
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
-var resize_1 = require("./resize");
+var get_1 = require("./get");
 function crop(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var width, height, left, top, format, originalImagePath, cropedPath, error_1;
@@ -73,11 +73,11 @@ function crop(req, res) {
                     res.status(200).sendFile(path_1.default.resolve(cropedPath));
                     return [3 /*break*/, 7];
                 case 1:
-                    if (!(0, resize_1.imageExist)(originalImagePath)) return [3 /*break*/, 6];
+                    if (!(0, get_1.imageExist)(originalImagePath)) return [3 /*break*/, 6];
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, cropImage((0, resize_1.imageExist)(originalImagePath), left, top, width, height, format)];
+                    return [4 /*yield*/, cropImage((0, get_1.imageExist)(originalImagePath), left, top, width, height, format)];
                 case 3:
                     _a.sent();
                     res.status(200).sendFile(cropedPath);

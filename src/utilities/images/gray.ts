@@ -2,7 +2,7 @@ import express from 'express';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
-import { imageExist } from './resize';
+import { imageExist } from './get';
 
 async function gray(req: express.Request, res: express.Response) {
   const format: unknown = req.query.format;

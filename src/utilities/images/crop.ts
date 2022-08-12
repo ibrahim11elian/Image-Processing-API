@@ -2,7 +2,7 @@ import express from 'express';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
-import { imageExist } from './resize';
+import { imageExist } from './get';
 
 async function crop(req: express.Request, res: express.Response) {
   let width: unknown = req.query.width;
