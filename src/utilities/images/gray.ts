@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { imageExist } from './get';
 
+// callback function when requesting the gray route 'api/images/gray?fname={image name}'
 async function gray(req: express.Request, res: express.Response) {
   const format: unknown = req.query.format;
   const originalImagePath = path.resolve(`assets/images/${req.query.fname}`);

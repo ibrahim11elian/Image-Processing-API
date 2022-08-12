@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { imageExist } from './get';
 
+// callback function when requesting the crop route 'api/images/crop?fname={image name}&width={crop width}&height={crop height}&top={Y coord}&left={X coord}'
 async function crop(req: express.Request, res: express.Response) {
   let width: unknown = req.query.width;
   let height: unknown = req.query.height;

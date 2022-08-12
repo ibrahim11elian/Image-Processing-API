@@ -44,6 +44,7 @@ var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var get_1 = require("./get");
+// callback function when requesting the blur route 'api/images/blur?fname={image name}&effect={blur effect}'
 function bluri(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var effect, format, originalImagePath, bluredPath, error_1;

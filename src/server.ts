@@ -11,9 +11,9 @@ const port = process.env.PORT || 3000;
 app.use(morgan('tiny'));
 // using CORS to let the client talk to server without security interruption
 app.use(cors());
-
+// home direct to readme file
 app.get('/', function (req, res) {
-  res.send('hello, world!');
+  res.redirect('https://github.com/ibrahim11elian/Image-Processing-API#readme');
 });
 
 // using images folder as static to return the url of the image if we want

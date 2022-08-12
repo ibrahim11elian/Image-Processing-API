@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { imageExist } from './get';
 
+// callback function when requesting the blur route 'api/images/blur?fname={image name}&effect={blur effect}'
 async function bluri(req: express.Request, res: express.Response) {
   let effect: unknown = req.query.effect;
   const format: unknown = req.query.format;

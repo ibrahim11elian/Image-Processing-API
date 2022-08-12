@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { imageExist } from './get';
 
+// callback function when requesting the resize route 'api/images/resize?fname={image name}&width={output width}&height={output height}'
 async function resize(req: express.Request, res: express.Response) {
   let width: unknown = req.query.width;
   let height: unknown = req.query.height;

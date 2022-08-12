@@ -44,6 +44,7 @@ var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var get_1 = require("./get");
+// callback function when requesting the gray route 'api/images/gray?fname={image name}'
 function gray(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var format, originalImagePath, grayPath, error_1;

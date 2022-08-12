@@ -15,8 +15,9 @@ var port = process.env.PORT || 3000;
 exports.app.use((0, morgan_1.default)('tiny'));
 // using CORS to let the client talk to server without security interruption
 exports.app.use((0, cors_1.default)());
+// home direct to readme file
 exports.app.get('/', function (req, res) {
-    res.send('hello, world!');
+    res.redirect('https://github.com/ibrahim11elian/Image-Processing-API#readme');
 });
 // using images folder as static to return the url of the image if we want
 exports.app.use('/images', express_1.default.static((0, path_1.resolve)("assets/images")));

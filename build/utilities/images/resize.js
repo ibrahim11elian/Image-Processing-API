@@ -44,6 +44,7 @@ var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var get_1 = require("./get");
+// callback function when requesting the resize route 'api/images/resize?fname={image name}&width={output width}&height={output height}'
 function resize(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var width, height, format, originalImagePath, thumnailPath, error_1;

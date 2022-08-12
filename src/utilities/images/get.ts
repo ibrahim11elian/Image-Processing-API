@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { existsSync } from 'fs';
+
 // response with image url
 function getImage(req: express.Request, res: express.Response): void {
   // checking is image exist or not
