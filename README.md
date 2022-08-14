@@ -128,19 +128,19 @@ http://{host}/api/images/resize?fname={image name => must be in image folder}&wi
 - For crop image:
 
 ```
-http://{host}/api/images/resize?fname={image name => must be in image folder}&width={ prefared width }&height={prefared height}&top={Y coord}&left={X coord}
+http://{host}/api/images/crop?fname={image name => must be in image folder}&width={ prefared width }&height={prefared height}&top={Y coord}&left={X coord}
 ```
 
 - For grayscale image:
 
 ```
-http://{host}/api/images/resize?fname={image name => must be in image folder}
+http://{host}/api/images/gray?fname={image name => must be in image folder}
 ```
 
 - For blur image:
 
 ```
-http://{host}/api/images/resize?fname={image name => must be in image folder}&effect={bulr effect intensity}
+http://{host}/api/images/blur?fname={image name => must be in image folder}&effect={bulr effect intensity}
 ```
 
 <strong>Note:</strong> For above APIs you can add query for change the responsed iamge, the query name is "format" and you can chose from: (jpg => defulte, png, jpeg).
