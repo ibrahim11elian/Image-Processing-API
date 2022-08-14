@@ -37,8 +37,6 @@ Users should be able to:
 │     ├── croped
 │     └── gray
 │
-├── build
-│
 ├── node_modules
 ├── spec
 │      └── support
@@ -51,15 +49,16 @@ Users should be able to:
 │     ├──  tests
 │     │     ├── helpers
 │     │     │      └── reporter.ts
-│     │     ├──  utilitis
-│     │     │      └── images
-│     │     │            ├── blurSpec.ts
-│     │     │            ├── cropSpec.ts
-│     │     │            ├── getSpec.ts
-│     │     │            ├── graySpec.ts
-│     │     │            └── resizeSpec.ts
+│     │     ├── utilitis
+│     │     │     └── images
+│     │     │           ├── blurSpec.ts
+│     │     │           ├── cropSpec.ts
+│     │     │           ├── getSpec.ts
+│     │     │           ├── graySpec.ts
+│     │     │           └── resizeSpec.ts
 │     │     │
 │     │     └── serverSpec.ts
+│     │
 │     ├──  utilitis
 │     │     ├── images
 │     │     │      ├── blur.ts
@@ -67,7 +66,9 @@ Users should be able to:
 │     │     │      ├── get.ts
 │     │     │      ├── gray.ts
 │     │     │      └── resize.ts
+│     │     │
 │     │     └── operations.ts
+│     │
 │     └── server.ts
 │
 ├── package-lock.json
