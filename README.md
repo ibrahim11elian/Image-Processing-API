@@ -86,19 +86,19 @@ Users should be able to:
 - you have to install all dependencies from:
 
 ```
-    npm install
+npm install
 ```
 
 - To build the project run:
 
 ```
-    npm run build
+npm run build
 ```
 
 - For testing run:
 
 ```
-    npm run test
+npm run test
 ```
 
 - To start the server you run:
@@ -106,7 +106,7 @@ Users should be able to:
   This will build the project before start
 
 ```
-    npm run start
+npm run start
 ```
 
 - Or you can run:
@@ -114,7 +114,7 @@ Users should be able to:
   This will run the server directly
 
 ```
-    node ./build/server.js
+node ./build/server.js
 ```
 
 ### API:
