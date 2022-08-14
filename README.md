@@ -202,7 +202,7 @@ http://{host}/api/images?fname={image name => must be in image folder}
 
 ### What I learned ?
 
-The API i created presents my first opportunity to pull together the skills i learned through the course(Udacity full stack nano degree) and tie them together in a commonly used application. Besides solidifying my skills, i also had the opportunity to problem-solve and work with the documentation of a popular image processing utility.
+The API i created presents my first opportunity to pull together the skills i learned through the course(Udacity full stack Nano degree) and tie them together in a commonly used application. Besides solidifying my skills, i also had the opportunity to problem-solve and work with the documentation of a popular image processing utility.
 
 The following are just some of the questions that i experienced along the way:
 
